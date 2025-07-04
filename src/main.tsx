@@ -1,7 +1,16 @@
+import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Logger } from 'tslog';
-import App from './App.tsx';
+import { routeTree } from './routeTree.gen.ts';
+
+const router = createRouter({ routeTree });
+
+declare module '@tanstack/react-router' {
+	interface Register {
+		router: typeof router;
+	}
+}
 
 const rootLogger = new Logger({ name: 'rootLogger' });
 const root = document.getElementById('root');
@@ -9,7 +18,7 @@ const root = document.getElementById('root');
 if (root) {
 	createRoot(root).render(
 		<StrictMode>
-			<App />
+			<RouterProvider router={router} />
 		</StrictMode>,
 	);
 	rootLogger.info(
