@@ -1,9 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./font.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --fontFamily-inter: 'Inter';
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -117,4 +119,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+body {
+  font-family: 'Inter', sans-serif;
 }
