@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import PasswordVariant from '@/features/auth/components/AuthVariants/PasswordVariant.tsx';
 import SSOVariant from '@/features/auth/components/AuthVariants/SSOVariant.tsx';
 import InputHomeServer from '@/features/auth/components/InputHomeServer.tsx';
@@ -15,11 +15,13 @@ interface ILoginFormProps {
 	className?: string;
 	defaultHomeServer: string;
 	matrixServerOptions: string[];
+	onChange: (value: string | null) => void;
 }
 export const LoginForm = ({
 	className,
 	defaultHomeServer,
 	matrixServerOptions,
+	onChange,
 }: ILoginFormProps) => {
 	const [homeServer, setHomeServer] = useState<URL | null>(
 		normalizeAndValidateUrl(defaultHomeServer),
@@ -31,6 +33,9 @@ export const LoginForm = ({
 		}, 1000),
 		[],
 	);
+	useEffect(() => {
+		onChange(homeServer?.host || null);
+	}, [homeServer]);
 
 	return (
 		<Card className={className}>
