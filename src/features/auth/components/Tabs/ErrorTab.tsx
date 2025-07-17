@@ -1,8 +1,7 @@
 import { WifiOff } from 'lucide-react';
-import { useAuthVariants } from '@/features/auth/provider/AuthVariantsProvider.tsx';
+import { memo } from 'react';
 
-function ErrorTab() {
-	const { error } = useAuthVariants();
+export const ErrorTab = memo(({ error }: { error: Error | null }) => {
 	if (!error) {
 		return null;
 	}
@@ -12,6 +11,4 @@ function ErrorTab() {
 			<span className="text-red-300 text-xs">{error.message}</span>
 		</div>
 	);
-}
-
-export default ErrorTab;
+});

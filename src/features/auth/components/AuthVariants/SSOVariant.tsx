@@ -1,9 +1,8 @@
-import { useAuthVariants } from '@/features/auth/provider/AuthVariantsProvider.tsx';
+import { memo } from 'react';
 import { Button } from '@/shared/ui/button.tsx';
 
-function SSOVariant() {
-	const { data } = useAuthVariants();
-	if (!data?.sso) {
+export const SSOVariant = memo(({ on }: { on: boolean }) => {
+	if (!on) {
 		return null;
 	}
 	return (
@@ -11,6 +10,4 @@ function SSOVariant() {
 			<Button>SSO</Button>
 		</div>
 	);
-}
-
-export default SSOVariant;
+});

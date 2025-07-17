@@ -1,11 +1,10 @@
-import { useAuthVariants } from '@/features/auth/provider/AuthVariantsProvider.tsx';
+import { memo } from 'react';
 import { Button } from '@/shared/ui/button.tsx';
 import { Input } from '@/shared/ui/input.tsx';
 import { Label } from '@/shared/ui/label.tsx';
 
-function PasswordVariant() {
-	const { data } = useAuthVariants();
-	if (!data?.password) {
+export const PasswordVariant = memo(({ on }: { on: boolean }) => {
+	if (!on) {
 		return null;
 	}
 	return (
@@ -29,6 +28,4 @@ function PasswordVariant() {
 			</Button>
 		</form>
 	);
-}
-
-export default PasswordVariant;
+});

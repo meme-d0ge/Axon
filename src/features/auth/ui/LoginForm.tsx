@@ -1,10 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import PasswordVariant from '@/features/auth/components/AuthVariants/PasswordVariant.tsx';
-import SSOVariant from '@/features/auth/components/AuthVariants/SSOVariant.tsx';
 import InputHomeServer from '@/features/auth/components/InputHomeServer.tsx';
-import ErrorTab from '@/features/auth/components/Tabs/ErrorTab.tsx';
-import LoadingTab from '@/features/auth/components/Tabs/LoadingTab.tsx';
-import { AuthVariantsProvider } from '@/features/auth/provider/AuthVariantsProvider.tsx';
+import LoginFormContent from '@/features/auth/components/LoginFormContent.tsx';
 import { debounce } from '@/shared/lib/debounce.ts';
 import { normalizeAndValidateUrl } from '@/shared/lib/normalizeAndValidateUrl.ts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card.tsx';
@@ -35,7 +31,7 @@ export const LoginForm = ({
 	);
 	useEffect(() => {
 		onChange(homeServer?.host || null);
-	}, [homeServer]);
+	}, [homeServer, onChange]);
 
 	return (
 		<Card className={className}>
@@ -54,12 +50,7 @@ export const LoginForm = ({
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="grid gap-8">
-				<AuthVariantsProvider homeServer={homeServer?.href || ''}>
-					<LoadingTab />
-					<ErrorTab />
-					<PasswordVariant />
-					<SSOVariant />
-				</AuthVariantsProvider>
+				<LoginFormContent homeServer={homeServer?.href || ''} />
 			</CardContent>
 		</Card>
 	);

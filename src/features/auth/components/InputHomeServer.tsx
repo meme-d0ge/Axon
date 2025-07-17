@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import CustomInputSelect from '@/shared/ui/custom/CustomInputSelect.tsx';
 
 interface IInputHomeServerProps {
@@ -12,9 +12,11 @@ export const InputHomeServer = ({
 	options,
 }: IInputHomeServerProps) => {
 	const [homeServer, setHomeServer] = useState<string>(defaultHomeServer);
-	useMemo(() => {
+
+	useEffect(() => {
 		setValue(homeServer);
 	}, [homeServer, setValue]);
+
 	return (
 		<CustomInputSelect
 			id="homeserver"
