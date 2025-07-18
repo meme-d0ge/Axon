@@ -50,7 +50,7 @@ export const LoginForm = ({
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="grid gap-8">
-				<LoginFormContent homeServer={homeServer?.href || ''} />
+				<LoginFormContent homeServer={homeServer} />
 			</CardContent>
 		</Card>
 	);
