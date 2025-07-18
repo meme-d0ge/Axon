@@ -1,6 +1,8 @@
 import type { MatrixClient } from 'matrix-js-sdk/lib/client';
 import type * as React from 'react';
 import { createContext, useContext, useState } from 'react';
+import { initMatrixClient } from '@/shared/matrix-sdk/lib/initMatrixClient.ts';
+import { getSession } from '@/shared/matrix-sdk/lib/state/getSession.ts';
 
 interface IMatrixClientProvider {
 	client: MatrixClient | null;
@@ -17,7 +19,10 @@ interface IMatrixClientProviderProps {
 export const MatrixClientProvider = ({
 	children,
 }: IMatrixClientProviderProps) => {
-	const [client, setClient] = useState<MatrixClient | null>(null);
+	const session = getSession();
+	const [client, setClient] = useState<MatrixClient | null>(
+		session ? initMatrixClient(session) : null,
+	);
 
 	return (
 		<MatrixClientContext.Provider

@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './pages/__root'
+import { Route as SsoRouteImport } from './pages/sso'
 import { Route as IndexRouteImport } from './pages/index'
 import { Route as LoginIndexRouteImport } from './pages/login/index'
 import { Route as LoginHomeServerRouteImport } from './pages/login/$homeServer'
 
+const SsoRoute = SsoRouteImport.update({
+  id: '/sso',
+  path: '/sso',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,36 +37,47 @@ const LoginHomeServerRoute = LoginHomeServerRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/sso': typeof SsoRoute
   '/login/$homeServer': typeof LoginHomeServerRoute
   '/login': typeof LoginIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/sso': typeof SsoRoute
   '/login/$homeServer': typeof LoginHomeServerRoute
   '/login': typeof LoginIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/sso': typeof SsoRoute
   '/login/$homeServer': typeof LoginHomeServerRoute
   '/login/': typeof LoginIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login/$homeServer' | '/login'
+  fullPaths: '/' | '/sso' | '/login/$homeServer' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login/$homeServer' | '/login'
-  id: '__root__' | '/' | '/login/$homeServer' | '/login/'
+  to: '/' | '/sso' | '/login/$homeServer' | '/login'
+  id: '__root__' | '/' | '/sso' | '/login/$homeServer' | '/login/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SsoRoute: typeof SsoRoute
   LoginHomeServerRoute: typeof LoginHomeServerRoute
   LoginIndexRoute: typeof LoginIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sso': {
+      id: '/sso'
+      path: '/sso'
+      fullPath: '/sso'
+      preLoaderRoute: typeof SsoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SsoRoute: SsoRoute,
   LoginHomeServerRoute: LoginHomeServerRoute,
   LoginIndexRoute: LoginIndexRoute,
 }
