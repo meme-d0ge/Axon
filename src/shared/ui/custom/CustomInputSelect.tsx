@@ -16,7 +16,7 @@ export interface ICustomInputSelectProps extends React.ComponentProps<'input'> {
 	id?: string;
 	setValue: (value: string) => void;
 	options?: string[];
-	aligh?: 'center' | 'end' | 'start';
+	align?: 'center' | 'end' | 'start';
 	side?: 'bottom' | 'top' | 'right' | 'left';
 	classNameDropMenu?: string;
 }
@@ -27,7 +27,7 @@ export const CustomInputSelect = ({
 	setValue,
 	options,
 	id,
-	aligh,
+	align,
 	side,
 	classNameDropMenu,
 	...rest
@@ -53,7 +53,7 @@ export const CustomInputSelect = ({
 				{options ? (
 					<PopoverContent
 						side={side}
-						align={aligh}
+						align={align}
 						className={classNameDropMenu}
 					>
 						<Command>

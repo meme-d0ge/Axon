@@ -26,7 +26,7 @@ export const InputHomeServer = ({
 			}}
 			options={options}
 			side={'bottom'}
-			aligh={'end'}
+			align={'end'}
 		/>
 	);
 };
