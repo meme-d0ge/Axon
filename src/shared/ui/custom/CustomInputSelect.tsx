@@ -1,5 +1,6 @@
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
+import { cn } from '@/shared/lib/utils.ts';
 import { Button } from '@/shared/ui/button.tsx';
 import { Command, CommandItem, CommandList } from '@/shared/ui/command.tsx';
 import { Input } from '@/shared/ui/input.tsx';
@@ -9,12 +10,17 @@ import {
 	PopoverTrigger,
 } from '@/shared/ui/popover.tsx';
 
-export interface ICustomInputSelectProps extends React.ComponentProps<'input'> {
+export interface CustomInputValue {
+	type: 'input' | 'select';
+	value: string;
+}
+export interface ICustomInputSelectProps
+	extends Omit<React.ComponentProps<'input'>, 'defaultValue' | 'onChange'> {
 	className?: string;
 	placeholder?: string;
-	value: string;
+	defaultValue: CustomInputValue;
+	onChange: (value: CustomInputValue) => void;
 	id?: string;
-	setValue: (value: string) => void;
 	options?: string[];
 	align?: 'center' | 'end' | 'start';
 	side?: 'bottom' | 'top' | 'right' | 'left';
@@ -23,26 +29,29 @@ export interface ICustomInputSelectProps extends React.ComponentProps<'input'> {
 export const CustomInputSelect = ({
 	className,
 	placeholder,
-	value,
-	setValue,
 	options,
 	id,
+	defaultValue,
 	align,
 	side,
 	classNameDropMenu,
+	onChange,
 	...rest
 }: ICustomInputSelectProps) => {
 	const [open, setOpen] = useState<boolean>(false);
+	const [value, setValue] = useState<CustomInputValue>(defaultValue);
+
 	return (
-		<div className={`relative ${className ? className : null}`}>
+		<div className={cn('relative', className)}>
 			<Input
 				{...rest}
 				id={id}
 				placeholder={placeholder}
 				onChange={(event) => {
-					setValue(event.target.value);
+					setValue({ type: 'input', value: event.target.value });
+					onChange({ type: 'input', value: event.target.value });
 				}}
-				value={value}
+				value={value.value}
 			/>
 			<Popover open={open} onOpenChange={setOpen}>
 				<PopoverTrigger asChild>
@@ -63,7 +72,8 @@ export const CustomInputSelect = ({
 										key={option}
 										value={option}
 										onSelect={(selected) => {
-											setValue(selected);
+											setValue({ type: 'select', value: selected });
+											onChange({ type: 'select', value: selected });
 											setOpen(false);
 										}}
 									>

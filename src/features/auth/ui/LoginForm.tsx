@@ -29,6 +29,10 @@ export const LoginForm = ({
 		}, 1000),
 		[],
 	);
+	const SetHomeServer = useCallback((value: string) => {
+		setHomeServer(normalizeAndValidateUrl(value));
+	}, []);
+
 	useEffect(() => {
 		onChange(homeServer?.host || null);
 	}, [homeServer, onChange]);
@@ -43,8 +47,14 @@ export const LoginForm = ({
 						<Label htmlFor="homeserver">Homeserver</Label>
 						<InputHomeServer
 							options={matrixServerOptions}
+							onChange={(value) => {
+								if (value.type === 'select') {
+									SetHomeServer(value.value);
+								} else {
+									debounceSetHomeServer(value.value);
+								}
+							}}
 							defaultHomeServer={defaultHomeServer}
-							setValue={debounceSetHomeServer}
 						/>
 					</div>
 				</CardTitle>

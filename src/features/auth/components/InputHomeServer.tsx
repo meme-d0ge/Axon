@@ -1,29 +1,22 @@
-import { useEffect, useState } from 'react';
-import CustomInputSelect from '@/shared/ui/custom/CustomInputSelect.tsx';
+import CustomInputSelect, {
+	type CustomInputValue,
+} from '@/shared/ui/custom/CustomInputSelect.tsx';
 
 interface IInputHomeServerProps {
 	defaultHomeServer: string;
-	setValue: (value: string) => void;
 	options?: string[];
+	onChange: (event: CustomInputValue) => void;
 }
 export const InputHomeServer = ({
 	defaultHomeServer,
-	setValue,
+	onChange,
 	options,
 }: IInputHomeServerProps) => {
-	const [homeServer, setHomeServer] = useState<string>(defaultHomeServer);
-
-	useEffect(() => {
-		setValue(homeServer);
-	}, [homeServer, setValue]);
-
 	return (
 		<CustomInputSelect
 			id="homeserver"
-			value={homeServer}
-			setValue={(value) => {
-				setHomeServer(value);
-			}}
+			defaultValue={{ type: 'select', value: defaultHomeServer }}
+			onChange={onChange}
 			options={options}
 			side={'bottom'}
 			align={'end'}
