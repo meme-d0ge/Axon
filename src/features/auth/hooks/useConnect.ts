@@ -6,7 +6,7 @@ export function useConnect(host: string) {
 		data: dataWellKnown,
 		isLoading: loadingMatrixClientWellKnown,
 		error: errorMatrixClientWellKnown,
-	} = useMatrixClientWellKnown(host, {
+	} = useMatrixClientWellKnown(host, 8000, {
 		enabled: !!host,
 		gcTime: 0,
 		retry: 1,
@@ -15,7 +15,7 @@ export function useConnect(host: string) {
 		data: dataGetFlows,
 		isLoading: loadingGetFlows,
 		error: errorGetFlows,
-	} = useGetFlows(dataWellKnown?.['m.homeserver'].base_url || '', {
+	} = useGetFlows(dataWellKnown?.['m.homeserver'].base_url || '', 8000, {
 		enabled: !!dataWellKnown?.['m.homeserver'].base_url,
 		gcTime: 0,
 		retry: 1,

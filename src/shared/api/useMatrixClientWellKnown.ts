@@ -12,14 +12,27 @@ export type MatrixClientWellKnown = {
 };
 export async function fetchMatrixClientWellKnown(
 	host: string,
+	timeout: number | null,
 ): Promise<MatrixClientWellKnown> {
 	const url = `${host}.well-known/matrix/client`;
-	const response = await axiosInstance.get<MatrixClientWellKnown>(url);
-	return response.data;
+
+	if (timeout !== null) {
+		const controller = new AbortController();
+		const timeoutId = setTimeout(() => controller.abort(), timeout);
+		const response = await axiosInstance.get<MatrixClientWellKnown>(url, {
+			signal: controller.signal,
+		});
+		clearTimeout(timeoutId);
+		return response.data;
+	} else {
+		const response = await axiosInstance.get<MatrixClientWellKnown>(url);
+		return response.data;
+	}
 }
 
 export function useMatrixClientWellKnown(
 	host: string,
+	timeout: number | null,
 	options?: Partial<
 		UseQueryOptions<
 			MatrixClientWellKnown,
@@ -31,7 +44,7 @@ export function useMatrixClientWellKnown(
 ) {
 	return useQuery({
 		queryKey: [API_CONFIG.useMatrixClientWellKnownKey, host],
-		queryFn: () => fetchMatrixClientWellKnown(host),
+		queryFn: () => fetchMatrixClientWellKnown(host, timeout),
 		enabled: !!host,
 		staleTime: 1000 * 60 * 5,
 		networkMode: 'always',

@@ -1,4 +1,4 @@
-import { isAxiosError } from 'axios';
+import axios, { isAxiosError } from 'axios';
 import { WifiOff } from 'lucide-react';
 import { ConnectionError } from 'matrix-js-sdk/lib/http-api/errors';
 import { memo, useCallback } from 'react';
@@ -11,6 +11,8 @@ export const ErrorTab = memo(({ error }: { error: Error | null }) => {
 					return new Error(
 						'Failed to connect. Either homeserver is unavailable at this moment or does not exist.',
 					);
+				} else if (axios.isCancel(error)) {
+					return new Error('Failed to connect. Server response timed out');
 				}
 				return error;
 			} else if (error instanceof ConnectionError) {

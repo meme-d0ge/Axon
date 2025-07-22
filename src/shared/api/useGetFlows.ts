@@ -11,21 +11,38 @@ export interface IUseConnectResponse {
 	client: MatrixClient;
 	flows: FlowVariants;
 }
-async function getFlows(homeServer: string): Promise<IUseConnectResponse> {
-	try {
+async function fetchGetFlows(
+	homeServer: string,
+	timeout: number | null,
+): Promise<IUseConnectResponse> {
+	const getFlows = async (): Promise<IUseConnectResponse> => {
 		const newClient = initMatrixClient({ baseUrl: homeServer });
 		const flows = parseAuthFlowsData(await newClient.loginFlows());
 		return {
 			client: newClient,
 			flows: flows,
+		} as IUseConnectResponse;
+	};
+
+	if (timeout !== null) {
+		let timeoutId: ReturnType<typeof setTimeout>;
+		const timeoutSleep = async () => {
+			await new Promise<void>((resolve) => {
+				timeoutId = setTimeout(() => {
+					resolve();
+				}, timeout);
+			});
+			throw new Error('Failed to connect. Server response timed out');
 		};
-	} catch (err) {
-		throw err;
-	} finally {
+		return Promise.race([getFlows(), timeoutSleep()]).finally(() => {
+			clearTimeout(timeoutId);
+		}) as Promise<IUseConnectResponse>;
 	}
+	return await getFlows();
 }
 export const useGetFlows = (
 	homeServer: string,
+	timeout: number | null,
 	options?: Partial<
 		UseQueryOptions<
 			IUseConnectResponse,
@@ -37,7 +54,7 @@ export const useGetFlows = (
 ) => {
 	return useQuery({
 		queryKey: [API_CONFIG.useGetFlows, homeServer],
-		queryFn: () => getFlows(homeServer),
+		queryFn: () => fetchGetFlows(homeServer, timeout),
 		enabled: !!homeServer,
 		staleTime: 1000 * 60 * 5,
 		networkMode: 'always',
