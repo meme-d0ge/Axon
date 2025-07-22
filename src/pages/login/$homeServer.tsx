@@ -1,8 +1,13 @@
-import { createFileRoute, useRouter } from '@tanstack/react-router';
+import { createFileRoute, useRouter, useSearch } from '@tanstack/react-router';
+import punycode from 'punycode';
+import { object, string } from 'zod/v4';
 import { LoginForm } from '@/features/auth';
 
 export const Route = createFileRoute('/login/$homeServer')({
 	component: RouteComponent,
+	validateSearch: object({
+		protocol: string().optional(),
+	}),
 });
 
 function RouteComponent() {
@@ -12,14 +17,28 @@ function RouteComponent() {
 	);
 	const defaultHomeServer: string = import.meta.env.VITE_MATRIX_DEFAULT_SERVER;
 	const router = useRouter();
+	const { protocol } = useSearch({ from: '/login/$homeServer' });
 	return (
 		<main className="mt-10">
 			<LoginForm
 				onChange={(host) => {
-					router.history.replace(`/login/${host || ''}`);
+					if (host?.protocol === 'http:') {
+						router.history.replace(
+							`/login/${punycode.toUnicode(host?.host || '')}?protocol=http`,
+						);
+					} else if (host?.protocol === 'https:') {
+						router.history.replace(
+							`/login/${punycode.toUnicode(host?.host || '')}`,
+						);
+					} else {
+						router.history.replace(`/login`);
+					}
 				}}
 				className="w-full max-w-md mx-auto"
-				defaultHomeServer={homeServer || defaultHomeServer}
+				defaultHomeServer={
+					`${protocol ? `${protocol}://` : ''}${homeServer}` ||
+					defaultHomeServer
+				}
 				matrixServerOptions={matrixServerOptions}
 			/>
 		</main>

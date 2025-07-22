@@ -1,4 +1,5 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router';
+import punycode from 'punycode';
 import { LoginForm } from '@/features/auth';
 
 export const Route = createFileRoute('/login/')({
@@ -15,7 +16,17 @@ function RouteComponent() {
 		<main className="mt-10">
 			<LoginForm
 				onChange={(host) => {
-					router.history.replace(`/login/${host || ''}`);
+					if (host?.protocol === 'http:') {
+						router.history.replace(
+							`/login/${punycode.toUnicode(host?.host || '')}?protocol=http`,
+						);
+					} else if (host?.protocol === 'https:') {
+						router.history.replace(
+							`/login/${punycode.toUnicode(host?.host || '')}`,
+						);
+					} else {
+						router.history.replace(`/login`);
+					}
 				}}
 				className="w-full max-w-md mx-auto"
 				defaultHomeServer={defaultHomeServer}

@@ -11,7 +11,7 @@ interface ILoginFormProps {
 	className?: string;
 	defaultHomeServer: string;
 	matrixServerOptions: string[];
-	onChange: (value: string | null) => void;
+	onChange: (value: URL | null) => void;
 }
 export const LoginForm = ({
 	className,
@@ -34,7 +34,7 @@ export const LoginForm = ({
 	}, []);
 
 	useEffect(() => {
-		onChange(homeServer?.host || null);
+		onChange(homeServer || null);
 	}, [homeServer, onChange]);
 
 	return (
