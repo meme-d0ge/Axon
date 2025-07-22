@@ -4,6 +4,7 @@ import {
 	useSearch,
 } from '@tanstack/react-router';
 import type { LoginResponse } from 'matrix-js-sdk/lib/@types/auth';
+import { toast } from 'sonner';
 import { object, string } from 'zod/v4';
 import { setSession } from '@/shared/matrix-sdk/lib/action/setSession.ts';
 import { initMatrixClient } from '@/shared/matrix-sdk/lib/initMatrixClient.ts';
@@ -35,6 +36,8 @@ function RouteComponent() {
 				});
 				navigate({
 					to: '/',
+				}).then(() => {
+					toast.success('Success login');
 				});
 			});
 	}

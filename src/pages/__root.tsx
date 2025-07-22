@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { MatrixClientProvider } from '@/shared/matrix-sdk';
 import { ThemeProvider } from '@/shared/Theme/ThemeProvider.tsx';
+import { Toaster } from '@/shared/ui/sonner.tsx';
 
 const queryClient = new QueryClient();
 export const Route = createRootRoute({
@@ -16,6 +17,7 @@ export const Route = createRootRoute({
 						<Outlet />
 						<TanStackRouterDevtools />
 						<ReactQueryDevtools initialIsOpen={false} />
+						<Toaster richColors={true} position={'bottom-center'} />
 					</ThemeProvider>
 				</MatrixClientProvider>
 			</QueryClientProvider>
