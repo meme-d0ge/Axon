@@ -32,8 +32,10 @@ export const ErrorTab = memo(({ error }: { error: Error | null }) => {
 
 	return (
 		<div className={'my-4 gap-2 flex items-center justify-center px-4'}>
-			<WifiOff className="text-red-300" />
-			<span className="text-red-300 text-xs">{handlingError()?.message}</span>
+			<WifiOff className="dark:text-red-300 text-red-600" />
+			<span className="dark:text-red-300 text-red-600 text-xs">
+				{handlingError()?.message}
+			</span>
 		</div>
 	);
 });
