@@ -25,13 +25,24 @@ function RouteComponent() {
 					if (host?.protocol === 'http:') {
 						router.history.replace(
 							`/login/${punycode.toUnicode(host?.host || '')}?protocol=http`,
+							{
+								replace: true,
+								updatedAt: false,
+							},
 						);
 					} else if (host?.protocol === 'https:') {
 						router.history.replace(
 							`/login/${punycode.toUnicode(host?.host || '')}`,
+							{
+								replace: true,
+								updatedAt: false,
+							},
 						);
 					} else {
-						router.history.replace(`/login`);
+						router.history.replace(`/login`, {
+							replace: true,
+							updatedAt: false,
+						});
 					}
 				}}
 				className="w-full max-w-md mx-auto"
