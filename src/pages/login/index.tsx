@@ -15,18 +15,18 @@ function RouteComponent() {
 	return (
 		<main className="mt-10">
 			<LoginForm
-				onChange={(host) => {
-					if (host?.protocol === 'http:') {
+				onChange={(loginFormValue) => {
+					if (loginFormValue.parseUrl?.protocol === 'http:') {
 						router.history.replace(
-							`/login/${punycode.toUnicode(host?.host || '')}?protocol=http`,
+							`/login/${punycode.toUnicode(encodeURIComponent(loginFormValue.inputValue))}?protocol=http`,
 							{
 								replace: true,
 								updatedAt: false,
 							},
 						);
-					} else if (host?.protocol === 'https:') {
+					} else if (loginFormValue.parseUrl?.protocol === 'https:') {
 						router.history.replace(
-							`/login/${punycode.toUnicode(host?.host || '')}`,
+							`/login/${punycode.toUnicode(encodeURIComponent(loginFormValue.inputValue))}`,
 							{
 								replace: true,
 								updatedAt: false,

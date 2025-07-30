@@ -11,7 +11,7 @@ interface ILoginFormProps {
 	className?: string;
 	defaultHomeServer: string;
 	matrixServerOptions: string[];
-	onChange: (value: URL | null) => void;
+	onChange: (value: { parseUrl: URL | null; inputValue: string }) => void;
 }
 export const LoginForm = ({
 	className,
@@ -19,18 +19,28 @@ export const LoginForm = ({
 	matrixServerOptions,
 	onChange,
 }: ILoginFormProps) => {
-	const [homeServer, setHomeServer] = useState<URL | null>(
-		normalizeAndValidateUrl(defaultHomeServer),
-	);
+	const [homeServer, setHomeServer] = useState<{
+		parseUrl: URL | null;
+		inputValue: string;
+	}>({
+		parseUrl: normalizeAndValidateUrl(defaultHomeServer),
+		inputValue: defaultHomeServer,
+	});
 
 	const debounceSetHomeServer = useCallback(
 		debounce((value: string) => {
-			setHomeServer(normalizeAndValidateUrl(value));
+			setHomeServer({
+				parseUrl: normalizeAndValidateUrl(value),
+				inputValue: value,
+			});
 		}, 1000),
 		[],
 	);
 	const SetHomeServer = useCallback((value: string) => {
-		setHomeServer(normalizeAndValidateUrl(value));
+		setHomeServer({
+			parseUrl: normalizeAndValidateUrl(value),
+			inputValue: value,
+		});
 	}, []);
 
 	useEffect(() => {
@@ -60,7 +70,7 @@ export const LoginForm = ({
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="grid gap-8">
-				<LoginFormContent homeServer={homeServer} />
+				<LoginFormContent homeServer={homeServer?.parseUrl} />
 			</CardContent>
 		</Card>
 	);
