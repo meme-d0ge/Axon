@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import InputHomeServer from '@/features/auth/components/InputHomeServer.tsx';
 import LoginFormContent from '@/features/auth/components/LoginFormContent.tsx';
 import { debounce } from '@/shared/lib/debounce.ts';
@@ -11,13 +11,13 @@ interface ILoginFormProps {
 	className?: string;
 	defaultHomeServer: string;
 	matrixServerOptions: string[];
-	onChange: (value: { parseUrl: URL | null; inputValue: string }) => void;
+    onChange: (value: { parseUrl: URL | null; inputValue: string }) => void;
 }
 export const LoginForm = ({
 	className,
 	defaultHomeServer,
 	matrixServerOptions,
-	onChange,
+    onChange,
 }: ILoginFormProps) => {
 	const [homeServer, setHomeServer] = useState<{
 		parseUrl: URL | null;
@@ -36,16 +36,10 @@ export const LoginForm = ({
 		}, 1000),
 		[],
 	);
-	const SetHomeServer = useCallback((value: string) => {
-		setHomeServer({
-			parseUrl: normalizeAndValidateUrl(value),
-			inputValue: value,
-		});
-	}, []);
 
-	useEffect(() => {
-		onChange(homeServer || null);
-	}, [homeServer, onChange]);
+    useEffect(() => {
+        onChange(homeServer)
+    }, [homeServer]);
 
 	return (
 		<Card className={className}>
@@ -59,7 +53,10 @@ export const LoginForm = ({
 							options={matrixServerOptions}
 							onChange={(value) => {
 								if (value.type === 'select') {
-									SetHomeServer(value.value);
+									setHomeServer({
+										parseUrl: normalizeAndValidateUrl(value.value),
+										inputValue: value.value,
+									});
 								} else {
 									debounceSetHomeServer(value.value);
 								}

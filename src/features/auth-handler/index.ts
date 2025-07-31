@@ -1,0 +1,1 @@
+export {authHandlerRedirect} from './lib/authHandlerRedirect.ts'
