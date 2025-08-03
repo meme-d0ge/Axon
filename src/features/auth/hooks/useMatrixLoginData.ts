@@ -1,7 +1,7 @@
 import { useGetFlows } from '@/shared/api/useGetFlows.ts';
 import { useMatrixClientWellKnown } from '@/shared/api/useMatrixClientWellKnown.ts';
 
-export function useConnect(host: string) {
+export function useMatrixLoginData(host: string) {
 	const {
 		data: dataWellKnown,
 		isLoading: loadingMatrixClientWellKnown,

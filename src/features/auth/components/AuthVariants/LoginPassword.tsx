@@ -18,7 +18,7 @@ interface IForm {
 	password: string;
 }
 
-export const PasswordVariant = memo(({ on }: { on: boolean }) => {
+export const LoginPassword = memo(({ on }: { on: boolean }) => {
 	const {
 		register,
 		handleSubmit,
@@ -79,7 +79,10 @@ export const PasswordVariant = memo(({ on }: { on: boolean }) => {
 						}
 					});
 			} else {
-				toast.warning('Empty username');
+				setError('username', {
+					type: 'manual',
+					message: 'Empty username',
+				});
 			}
 		}
 	};
@@ -104,7 +107,7 @@ export const PasswordVariant = memo(({ on }: { on: boolean }) => {
 		return null;
 	}
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} className={`grid gap-5 mt-4`}>
+		<form onSubmit={handleSubmit(onSubmit)} className={`grid gap-5`}>
 			<div className="grid gap-3">
 				<Label htmlFor="username">Username</Label>
 				<Input

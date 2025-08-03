@@ -2,7 +2,7 @@ import { memo, useCallback } from 'react';
 import { useClient } from '@/shared/matrix-sdk';
 import { Button } from '@/shared/ui/button.tsx';
 
-export const SSOVariant = memo(
+export const LoginSSO = memo(
 	({ on, baseUrl }: { on: boolean; baseUrl: string | undefined }) => {
 		const { client } = useClient();
 

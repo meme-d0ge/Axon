@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import InputHomeServer from '@/features/auth/components/InputHomeServer.tsx';
 import LoginFormContent from '@/features/auth/components/LoginFormContent.tsx';
 import { debounce } from '@/shared/lib/debounce.ts';
@@ -11,13 +11,13 @@ interface ILoginFormProps {
 	className?: string;
 	defaultHomeServer: string;
 	matrixServerOptions: string[];
-    onChange: (value: { parseUrl: URL | null; inputValue: string }) => void;
+	onChange: (value: { parseUrl: URL | null; inputValue: string }) => void;
 }
 export const LoginForm = ({
 	className,
 	defaultHomeServer,
 	matrixServerOptions,
-    onChange,
+	onChange,
 }: ILoginFormProps) => {
 	const [homeServer, setHomeServer] = useState<{
 		parseUrl: URL | null;
@@ -37,9 +37,9 @@ export const LoginForm = ({
 		[],
 	);
 
-    useEffect(() => {
-        onChange(homeServer)
-    }, [homeServer]);
+	useEffect(() => {
+		onChange(homeServer);
+	}, [homeServer]);
 
 	return (
 		<Card className={className}>
@@ -66,7 +66,7 @@ export const LoginForm = ({
 					</div>
 				</CardTitle>
 			</CardHeader>
-			<CardContent className="grid gap-8">
+			<CardContent>
 				<LoginFormContent homeServer={homeServer?.parseUrl} />
 			</CardContent>
 		</Card>
