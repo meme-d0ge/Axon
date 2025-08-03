@@ -1,11 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
-import InputHomeServer from '@/features/auth/components/InputHomeServer.tsx';
+import { useEffect, useState } from 'react';
+import { BaseForm } from '@/features/auth/components/BaseForm.tsx';
 import LoginFormContent from '@/features/auth/components/LoginFormContent.tsx';
-import { debounce } from '@/shared/lib/debounce.ts';
 import { normalizeAndValidateUrl } from '@/shared/lib/normalizeAndValidateUrl.ts';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card.tsx';
-import { Label } from '@/shared/ui/label.tsx';
-import { Separator } from '@/shared/ui/separator.tsx';
 
 interface ILoginFormProps {
 	className?: string;
@@ -26,49 +22,18 @@ export const LoginForm = ({
 		parseUrl: normalizeAndValidateUrl(defaultHomeServer),
 		inputValue: defaultHomeServer,
 	});
-
-	const debounceSetHomeServer = useCallback(
-		debounce((value: string) => {
-			setHomeServer({
-				parseUrl: normalizeAndValidateUrl(value),
-				inputValue: value,
-			});
-		}, 1000),
-		[],
-	);
-
 	useEffect(() => {
 		onChange(homeServer);
-	}, [homeServer]);
+	}, [homeServer, onChange]);
 
 	return (
-		<Card className={className}>
-			<CardHeader>
-				<CardTitle className="grid gap-5">
-					<span>Axon</span>
-					<Separator />
-					<div className={'grid gap-3'}>
-						<Label htmlFor="homeserver">Homeserver</Label>
-						<InputHomeServer
-							options={matrixServerOptions}
-							onChange={(value) => {
-								if (value.type === 'select') {
-									setHomeServer({
-										parseUrl: normalizeAndValidateUrl(value.value),
-										inputValue: value.value,
-									});
-								} else {
-									debounceSetHomeServer(value.value);
-								}
-							}}
-							defaultHomeServer={defaultHomeServer}
-						/>
-					</div>
-				</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<LoginFormContent homeServer={homeServer?.parseUrl} />
-			</CardContent>
-		</Card>
+		<BaseForm
+			className={className}
+			defaultHomeServer={defaultHomeServer}
+			matrixServerOptions={matrixServerOptions}
+			setHomeServer={setHomeServer}
+		>
+			<LoginFormContent homeServer={homeServer?.parseUrl} />
+		</BaseForm>
 	);
 };
