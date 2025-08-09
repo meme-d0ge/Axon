@@ -15,7 +15,7 @@ export function useMatrixLoginData(host: string) {
 		data: dataGetFlows,
 		isLoading: loadingGetFlows,
 		error: errorGetFlows,
-	} = useGetFlows(dataWellKnown?.['m.homeserver'].base_url || '', 8000, {
+	} = useGetFlows(dataWellKnown?.['m.homeserver'].base_url!, 8000, {
 		enabled: !!dataWellKnown?.['m.homeserver'].base_url,
 		gcTime: 0,
 		retry: 1,
